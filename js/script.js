@@ -54,3 +54,119 @@ const images = [
       'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et temporibus voluptatum suscipit tempore aliquid deleniti aut veniam.',
   },
 ];
+
+// Steps
+
+// Creo i bottoni per gestire le slide
+
+const buttonsList = [
+  {
+    id: 'next',
+    icon: {
+      classList: ['bi','bi-arrow-right-circle-fill']
+    }
+  },
+  {
+    id: 'prev',
+    icon: {
+      classList: ['bi','bi-arrow-left-circle-fill']
+    }
+  }
+]
+
+// Collego il display finale
+
+const display = document.querySelector('.container');
+
+// Riempio il container coi contenuti
+
+let content = `<div id="carousel"><div class="slide">`;
+
+for(let i = 0; i < images.length; i++){
+    const currentImage = images[i];
+    content += `<p class="image-description item">${currentImage.title}<br>${currentImage.description}</p>
+    <img src="${currentImage.url}" alt="image${[currentImage.title]}" class="item"></img>`;
+}
+
+for(let i = 0; i <buttonsList.length; i++){
+  const currentButton = buttonsList[i];
+  content += `<button id="${currentButton.id}"><i class="${currentButton.icon.classList.join(' ')}"></i></button>`;
+}
+
+content += `</div><div class="row row-cols-5 gallery">`;
+
+for(let i = 0; i < images.length; i++){
+    const currentImage = images[i];
+    content += `<div class="col">
+    <img src="${currentImage.url}" alt="${[currentImage.url]}" class="item"></img></div>`;
+}
+
+content += `</div></div>`;
+
+// Finalizzo il display
+
+display.innerHTML = content
+
+// Creo una variabile per l'elemento attivo
+
+let activeItem = 0
+
+// Creo un array per scorrere fra gli elementi attivi desiderati
+
+const activeSlideArray = document.querySelectorAll('.slide img','.image-description');
+const activeSlideText = document.querySelectorAll('.image-description');
+const activeGalleryArray = document.querySelectorAll('#carousel .gallery img');
+
+// Aggiungo la classe che funge da active
+
+activeSlideArray[activeItem].classList.add("active");
+activeSlideText[activeItem].classList.add("active");
+activeGalleryArray[activeItem].classList.add("active");
+
+
+// Se clicco next
+
+next.addEventListener('click',function(){
+
+    // Tolgo l'active all'elemento corrente
+    activeSlideArray[activeItem].classList.remove("active");
+    activeSlideText[activeItem].classList.remove("active");
+    activeGalleryArray[activeItem].classList.remove("active");
+
+    // Aumento il "contatore di active"
+    activeItem++
+
+    // * BONUS 1: Se il contatore è al massimo quando clicco, torna a 0
+    if(activeItem === activeSlideArray.length){
+        activeItem = 0;
+    }
+
+    // E restituisco l'active al "nuovo" elemento
+    activeSlideArray[activeItem].classList.add("active");
+    activeSlideText[activeItem].classList.add("active");
+    activeGalleryArray[activeItem].classList.add("active");
+})
+
+// Se clicco next
+
+prev.addEventListener('click',function(){
+
+    // Tolgo l'active all'elemento corrente
+    activeSlideArray[activeItem].classList.remove("active");
+    activeSlideText[activeItem].classList.remove("active");
+    activeGalleryArray[activeItem].classList.remove("active");
+    
+    // * BONUS 1: Se il contatore è al minimo quando clicco, torna al massimo
+    if(activeItem === 0){
+        activeItem = activeSlideArray.length;
+    }
+
+    // Diminuisco il "contatore di active"
+    activeItem--
+
+
+    // E restituisco l'active al "nuovo" elemento
+    activeSlideArray[activeItem].classList.add("active");
+    activeSlideText[activeItem].classList.add("active");
+    activeGalleryArray[activeItem].classList.add("active");
+})
